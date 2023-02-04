@@ -1,0 +1,11 @@
+{
+	"id": "ublik-om_my-plugin",
+	"name": "My Plugin",
+	"version": "0.0.1",
+	"minAppVersion": "1.00.0",
+	"description": "Plugin description",
+	"author": "Dale de Silva",
+	"authorUrl": "https://ublik-om.net",
+	"fundingUrl": "https://twitter.com/daledesilva",
+	"isDesktopOnly": false
+}
