@@ -1,8 +1,9 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
 import { App, DataWriteOptions, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
 import { CreatedDateTypes, PluginSettings } from 'src/types/PluginSettings';
+import { updateTagSelector } from './logic/tag-selection-logic';
 import { StartImportModal } from './modals/import-modal/import-modal';
-import { KeepImportSettingTab } from './tabs/settings-tab/settings-tab';
+import { MySettingsTab } from './tabs/settings-tab/settings-tab';
 
 
 
@@ -16,6 +17,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
 
 export default class KeepPlugin extends Plugin {
 	settings: PluginSettings;
+	pluginUpdatedFileLast: boolean;
 
 	async onload() {
 		await this.loadSettings();
@@ -28,9 +30,22 @@ export default class KeepPlugin extends Plugin {
 		// 	}
 		// });
 
+		this.registerEvent(this.app.vault.on('create', (file) => {
+			console.log('a new file has entered the arena')
+			console.log('file', file);
+		}));
+
+		this.registerEvent(this.app.vault.on('modify', (file) => {
+			if(!this.pluginUpdatedFileLast) {
+				updateTagSelector(this.app.vault, file as TFile);
+				this.pluginUpdatedFileLast = true;
+			} else {
+				this.pluginUpdatedFileLast = false;
+			}
+		}));
 		
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new MySettingTab(this.app, this));
+		// this.addSettingTab(new MySettingsTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.

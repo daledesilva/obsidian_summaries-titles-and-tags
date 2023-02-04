@@ -4,7 +4,7 @@ import { ConfirmationModal } from "src/modals/confirmation-modal/confirmation-mo
 
 
 
-export class MySettingTab extends PluginSettingTab {
+export class MySettingsTab extends PluginSettingTab {
 	plugin: MyPlugin;
 
 	constructor(app: App, plugin: MyPlugin) {
@@ -48,7 +48,7 @@ export class MySettingTab extends PluginSettingTab {
 					new ConfirmationModal({
 						plugin: this.plugin,
 						title: 'Please confirm',
-						message: 'Revert to default settings for Google Keep Import?',
+						message: 'Revert to default settings for My Plugin?',
 						confirmLabel: 'Reset settings',
 						confirmAction: async () => {
 							await this.plugin.resetSettings();

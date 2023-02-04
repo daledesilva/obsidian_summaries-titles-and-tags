@@ -6,9 +6,8 @@
 
 Also, set up a symbolic link in the obsidian vaul's plugins directory to your plugin's dist folder so it automatically get's published there while developing.
 The hotlink will then handle the auto reloading of it.
-ln -s /path/to/original /path/to/link
+ln -s /abs-path/to/original /path/to/link
 
-ie.
-ln -s ./dist ../
+ln -s <drag in dist folder for abs ref> ../
 
 The plugin directory is in the obsidian vault. On mac, press cmd + shift + . to see hidden files and folders)
