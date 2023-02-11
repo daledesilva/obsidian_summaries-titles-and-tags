@@ -1,9 +1,8 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
 import { App, DataWriteOptions, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
-import { CreatedDateTypes, PluginSettings } from 'src/types/PluginSettings';
-import { TagSelector } from './components/tag-selector/tag-selector';
+import { PluginSettings } from 'src/types/PluginSettings';
+import { showStripes, zebraStripes } from './extensions/tag-selector/tag-selector';
 import { updateTagSelector } from './logic/tag-selection-logic';
-import { StartImportModal } from './modals/import-modal/import-modal';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
 
 
@@ -68,30 +67,7 @@ export default class KeepPlugin extends Plugin {
 
 
 
-		this.registerMarkdownCodeBlockProcessor(
-			"auto-easy-tagger",
-			(source, el, ctx) => {
-
-				const rawText = source.trim();
-				const viewMode = this.getViewMode(el);
-
-				if(viewMode) {
-					ctx.addChild(new TagSelector(el, viewMode));
-				}
-
-				// const tableId = text.match(TABLE_ID_REGEX) ? text : null;
-				// if (tableId) {
-				// 	const viewMode = this.getViewMode(el);
-				// 	if (viewMode) {
-				// 		ctx.addChild(new NltTable(el, this, tableId, viewMode));
-				// 	}
-				// }
-			}
-		);
-
-
-
-		// this.registerEditorExtension())
+		this.registerEditorExtension([zebraStripes()]);
 
 
 
