@@ -1,9 +1,13 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
 import { App, DataWriteOptions, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
 import { PluginSettings } from 'src/types/PluginSettings';
-import { showStripes, zebraStripes } from './extensions/tag-selector/tag-selector';
+import { replacingWidgetExtension } from './extensions/example-decorations/replacing-widget';
+import { lineExtension } from './extensions/example-decorations/line';
+import { transientMarkExtension } from './extensions/example-decorations/transient-mark';
 import { updateTagSelector } from './logic/tag-selection-logic';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
+import { inlineWidgetExtension } from './extensions/example-decorations/inline-widget';
+import { persistentMarkExtension } from './extensions/example-decorations/persistent-mark';
 
 
 
@@ -67,9 +71,13 @@ export default class KeepPlugin extends Plugin {
 
 
 
-		this.registerEditorExtension([zebraStripes()]);
-
-
+		this.registerEditorExtension([
+			transientMarkExtension(),
+			persistentMarkExtension(),
+			inlineWidgetExtension(),
+			replacingWidgetExtension(),
+			// lineExtension(),
+		]);
 
 		
 
