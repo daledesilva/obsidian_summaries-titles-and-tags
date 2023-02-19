@@ -1,20 +1,18 @@
 import {
 	Extension,
-	StateEffect,
 	StateField,
-	RangeSetBuilder,
  } from "@codemirror/state";
 import {
 	Decoration,
 	DecorationSet,
 	EditorView,
 	WidgetType,
-	keymap,
 } from "@codemirror/view";
 
-// Import scss file so that compiler adds it
+// Import scss file so that compiler adds it.
+// This is instead of injecting it using EditorView.baseTheme
+// This allow syou to write scss in an external file and have it refresh during dev better.
 import './block-widget.scss';
-
 
 
 
@@ -30,16 +28,6 @@ export class MyWidget extends WidgetType {
 }
 const myWidget = Decoration.widget({widget: new MyWidget()});
 
-// Define the class to apply and the related styling
-// const myTheme = EditorView.baseTheme({
-// 	".block-widget": {
-// 		backgroundColor: '#000000',
-// 		borderColor: '#444444',
-// 		borderRadius: '5px',
-// 		padding: '0.1em 1.2em',
-
-// 	}
-// })
 
 // Define a StateField to monitor the state of all underline decorations in the set
 const myStateField = StateField.define<DecorationSet>({
@@ -73,6 +61,5 @@ export function blockWidgetExtension(): Extension {
 		myStateField,
 	]
 }
-
 
 

@@ -1,14 +1,14 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
 import { App, DataWriteOptions, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
 import { PluginSettings } from 'src/types/PluginSettings';
-import { replacingWidgetExtension } from './extensions/example-decorations/replacing-widget';
-import { lineExtension } from './extensions/example-decorations/line';
-import { transientMarkExtension } from './extensions/example-decorations/transient-mark';
+import { replacingWidgetExtension } from './extensions/example-decorations/widgets/replacing-widget';
+import { lineExtension } from './extensions/example-decorations/line-decoration/line';
+import { transientMarkExtension } from './extensions/example-decorations/mark-decorations/transient-mark';
 import { updateTagSelector } from './logic/tag-selection-logic';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
-import { inlineWidgetPluginExtension } from './extensions/example-decorations/inline-widget-plugin';
-import { persistentMarkExtension } from './extensions/example-decorations/persistent-mark';
-import { blockWidgetExtension } from './extensions/example-decorations/block-widget';
+import { inlineWidgetPluginExtension } from './extensions/example-decorations/widgets/inline-widget-plugin';
+import { persistentMarkExtension } from './extensions/example-decorations/mark-decorations/persistent-mark';
+import { blockWidgetExtension } from './extensions/example-decorations/widgets/block-widget';
 
 
 
