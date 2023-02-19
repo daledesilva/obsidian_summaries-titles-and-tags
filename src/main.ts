@@ -12,7 +12,6 @@ import { blockWidgetExtension } from './extensions/example-decorations/block-wid
 
 
 
-
 export const DEFAULT_SETTINGS: PluginSettings = {
 	
 }

@@ -24,9 +24,8 @@ export class MyWidget extends WidgetType {
 		blockDiv.addClass('block-widget');
 		blockDiv.addClass('external-styling');
 		blockDiv.createEl('h2').innerText = 'Block Widget';
-		blockDiv.createEl('p').innerText = 'This is a block widget placed in a static position at the top of the document';
+		blockDiv.createEl('p').innerText = 'This is a block widget placed in a static position at the top of the document.';
 		return blockDiv;
-
 	}
 }
 const myWidget = Decoration.widget({widget: new MyWidget()});
