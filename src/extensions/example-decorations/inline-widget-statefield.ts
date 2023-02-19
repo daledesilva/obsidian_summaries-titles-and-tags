@@ -22,7 +22,7 @@ import {keymap} from "@codemirror/view";
 
 
 
-
+// TODO: This plugin needs refactoring to not use a plugin
 
 
 
@@ -135,7 +135,7 @@ class MyCodeMirrorPlugin implements PluginValue {
   const myCodeMirrorPlugin = ViewPlugin.fromClass( MyCodeMirrorPlugin, pluginSpec );
 
 
-  export function inlineWidgetExtension(): Extension {
+  export function inlineWidgetStatefieldExtension(): Extension {
 	return [
 	  myCodeMirrorPlugin,
 	]

@@ -54,3 +54,11 @@ esbuild.build({
 		}),
 	  ],
 }).catch(() => process.exit(1));
+// }).then(() => {
+// 	const oldFilePath = path.resolve(__dirname, 'dist/main.css');
+// 	const newFilePath = path.resolve(__dirname, 'dist/new-bundle-name.js');
+// 	fs.rename(oldFilePath, newFilePath, (err) => {
+// 		if (err) throw err;
+// 		console.log('File renamed!');
+// 	});
+// }).catch(() => process.exit(1));

@@ -6,8 +6,9 @@ import { lineExtension } from './extensions/example-decorations/line';
 import { transientMarkExtension } from './extensions/example-decorations/transient-mark';
 import { updateTagSelector } from './logic/tag-selection-logic';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
-import { inlineWidgetExtension } from './extensions/example-decorations/inline-widget';
+import { inlineWidgetPluginExtension } from './extensions/example-decorations/inline-widget-plugin';
 import { persistentMarkExtension } from './extensions/example-decorations/persistent-mark';
+import { blockWidgetExtension } from './extensions/example-decorations/block-widget';
 
 
 
@@ -74,11 +75,12 @@ export default class KeepPlugin extends Plugin {
 		this.registerEditorExtension([
 			transientMarkExtension(),
 			persistentMarkExtension(),
-			inlineWidgetExtension(),
+			// inlineWidgetStateFieldExtension(),
+			inlineWidgetPluginExtension(),
 			replacingWidgetExtension(),
 			// lineExtension(),
+			blockWidgetExtension(),
 		]);
-
 		
 
 	}
