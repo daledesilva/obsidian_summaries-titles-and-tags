@@ -9,6 +9,7 @@ import { MySettingsTab } from './tabs/settings-tab/settings-tab';
 import { inlineWidgetPluginExtension } from './extensions/example-decorations/widgets/inline-widget-plugin';
 import { persistentMarkExtension } from './extensions/example-decorations/mark-decorations/persistent-mark';
 import { blockWidgetExtension } from './extensions/example-decorations/widgets/block-widget';
+import { blockWidgetReactExtension } from './extensions/example-decorations/widgets/block-widget-react';
 
 
 
@@ -78,7 +79,8 @@ export default class KeepPlugin extends Plugin {
 			inlineWidgetPluginExtension(),
 			replacingWidgetExtension(),
 			// lineExtension(),
-			blockWidgetExtension(),
+			// blockWidgetExtension(),
+			blockWidgetReactExtension(),
 		]);
 		
 

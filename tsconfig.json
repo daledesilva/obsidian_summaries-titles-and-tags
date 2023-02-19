@@ -10,15 +10,16 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "isolatedModules": true,
-	"strictNullChecks": true,
+    "strictNullChecks": true,
     "lib": [
       "DOM", "dom.iterable",
       "ES5",
       "ES6",
       "ES7"
-    ]
+    ],
+    "jsx": "react",
   },
   "include": [
     "**/*.ts"
-  ]
+, "src/extensions/example-decorations/widgets/block-widget-react.tsx", "src/extensions/example-decorations/widgets/block-widget-react.tsx", "src/extensions/example-decorations/widgets/block-widget-react-app.tsx"  ]
 }

@@ -8,6 +8,11 @@ import {
 	EditorView,
 	WidgetType,
 } from "@codemirror/view";
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { createRoot } from "react-dom/client";
+import { BlockWidgetReactApp } from './block-widget-react-app';
+
 
 // Import scss file so that compiler adds it.
 // This is instead of injecting it using EditorView.baseTheme
@@ -15,15 +20,20 @@ import {
 import './block-widget.scss';
 
 
-
 export class MyWidget extends WidgetType {
 	toDOM(view: EditorView): HTMLElement {
-		const blockDiv = document.createElement('div');
-		blockDiv.addClass('block-widget');
-		blockDiv.addClass('external-styling');
-		blockDiv.createEl('h2').innerText = 'Block Widget';
-		blockDiv.createEl('p').innerText = 'This is a block widget placed in a static position at the top of the document.';
-		return blockDiv;
+		const rootEl = document.createElement('div');
+		const root = createRoot(rootEl);
+		root.render(
+			// <Provider store={store}>
+				<BlockWidgetReactApp
+					// plugin={this.plugin}
+					// tableId={this.tableId}
+					// viewMode={this.viewMode}
+				/>
+			// </Provider>
+		);
+		return rootEl;
 	}
 }
 const myWidget = Decoration.widget({widget: new MyWidget()});
@@ -56,7 +66,7 @@ const myStateField = StateField.define<DecorationSet>({
 
 
 
-export function blockWidgetExtension(): Extension {
+export function blockWidgetReactExtension(): Extension {
 	return [
 		myStateField,
 	]
