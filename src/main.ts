@@ -1,15 +1,7 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
 import { App, DataWriteOptions, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
 import { PluginSettings } from 'src/types/PluginSettings';
-import { replacingWidgetExtension } from './extensions/example-decorations/widgets/replacing-widget';
-import { lineExtension } from './extensions/example-decorations/line-decoration/line';
-import { transientMarkExtension } from './extensions/example-decorations/mark-decorations/transient-mark';
-import { updateTagSelector } from './logic/tag-selection-logic';
-import { MySettingsTab } from './tabs/settings-tab/settings-tab';
-import { inlineWidgetPluginExtension } from './extensions/example-decorations/widgets/inline-widget-plugin';
-import { persistentMarkExtension } from './extensions/example-decorations/mark-decorations/persistent-mark';
-import { blockWidgetExtension } from './extensions/example-decorations/widgets/block-widget';
-import { blockWidgetReactExtension } from './extensions/example-decorations/widgets/block-widget-react';
+import { tagSuggestionExtension } from './extensions/tag-suggestion-block-widget/tag-suggestion-block-widget';
 
 
 
@@ -62,7 +54,7 @@ export default class KeepPlugin extends Plugin {
 		// }));
 		
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		// this.addSettingTab(new MySettingsTab(this.app, this));
+		// this.addSettingsTab(new MySettingsTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -73,16 +65,8 @@ export default class KeepPlugin extends Plugin {
 
 
 		this.registerEditorExtension([
-			transientMarkExtension(),
-			persistentMarkExtension(),
-			// inlineWidgetStateFieldExtension(),
-			inlineWidgetPluginExtension(),
-			replacingWidgetExtension(),
-			// lineExtension(),
-			// blockWidgetExtension(),
-			blockWidgetReactExtension(),
-		]);
-		
+			tagSuggestionExtension(),
+		]);		
 
 	}
 
@@ -105,5 +89,4 @@ export default class KeepPlugin extends Plugin {
 		new Notice('Plugin settings reset');
 	}
 }
-
 

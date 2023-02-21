@@ -8,25 +8,30 @@ import {
 	EditorView,
 	WidgetType,
 } from "@codemirror/view";
-
-// Import scss file so that compiler adds it.
-// This is instead of injecting it using EditorView.baseTheme
-// This allow syou to write scss in an external file and have it refresh during dev better.
-import './block-widget.scss';
-
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { createRoot } from "react-dom/client";
+import { App } from './app';
 
 
-export class MyWidget extends WidgetType {
+
+export class TagSuggestionBlockWidget extends WidgetType {
 	toDOM(view: EditorView): HTMLElement {
-		const blockDiv = document.createElement('div');
-		blockDiv.addClass('block-widget');
-		blockDiv.addClass('external-styling');
-		blockDiv.createEl('h2').innerText = 'Block Widget';
-		blockDiv.createEl('p').innerText = 'This is a block widget placed in a static position at the top of the document.';
-		return blockDiv;
+		const rootEl = document.createElement('div');
+		const root = createRoot(rootEl);
+		root.render(
+			// <Provider store={store}>
+				<App
+					// plugin={this.plugin}
+					// tableId={this.tableId}
+					// viewMode={this.viewMode}
+				/>
+			// </Provider>
+		);
+		return rootEl;
 	}
 }
-const myWidget = Decoration.widget({widget: new MyWidget()});
+const myWidget = Decoration.widget({widget: new TagSuggestionBlockWidget()});
 
 
 // Define a StateField to monitor the state of all underline decorations in the set
@@ -35,11 +40,9 @@ const myStateField = StateField.define<DecorationSet>({
 	// Starts with an empty DecorationSet
 	create(): DecorationSet {
 		let set = Decoration.none;
-
 		set = set.update({
 			add: [myWidget.range(0)]
 		})
-
 		return set;
 	},
 	
@@ -56,7 +59,7 @@ const myStateField = StateField.define<DecorationSet>({
 
 
 
-export function blockWidgetExtension(): Extension {
+export function tagSuggestionExtension(): Extension {
 	return [
 		myStateField,
 	]

@@ -1,9 +1,9 @@
 {
-	"id": "ublik-om_my-plugin",
-	"name": "My Plugin",
+	"id": "ublik-om_auto-easy-tagger",
+	"name": "Auto Easy Tagger",
 	"version": "0.0.1",
 	"minAppVersion": "1.00.0",
-	"description": "Plugin description",
+	"description": "Provides tag suggestions at the top of each note.",
 	"author": "Dale de Silva",
 	"authorUrl": "https://ublik-om.net",
 	"fundingUrl": "https://twitter.com/daledesilva",
