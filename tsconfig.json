@@ -18,6 +18,7 @@
       "ES7"
     ],
     "jsx": "react",
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
     "**/*.ts"

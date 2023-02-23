@@ -1,5 +1,8 @@
+import classNames from "classnames";
 import * as React from "react";
 import { useState } from "react";
+
+import { TagSuggestion } from 'src/react-components/tag-suggestion/tag-suggestion';
 
 // Import scss file so that compiler adds it.
 // This is instead of injecting it using EditorView.baseTheme
@@ -8,26 +11,29 @@ import './styles.scss';
 
 
 export const App = () => {
-  const [title, setTitle] = useState('React Based Block Widget');
+  const [isOpen, setIsOpen] = useState(false);
 
   return <>
     <div
-      className = 'block-widget external-styling'  // Incorporate classnames module
+      className = {classNames(
+        'uo_tag-suggestions',
+        isOpen && 'uo_is-open',
+      )}
       >
       
-      <h2>
-        {title}
-      </h2>
+      <h2>Tag Suggestions</h2>
 
-      <p>
-        This is a react based block widget placed in a static position at the top of hte document.
-      </p>
-
-      <button
-        onClick = {() => setTitle('Changed Title')}
-        >
-        Change Title
-      </button>
+      <div className='uo_tags'>
+        <TagSuggestion
+          tagName = 'gary'
+        />
+        <TagSuggestion
+          tagName = 'tom'
+        />
+        <TagSuggestion
+          tagName = 'lisa'
+        />
+      </div>
 
     </div>
   </>;
