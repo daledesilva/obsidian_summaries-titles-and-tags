@@ -1,7 +1,8 @@
 import { fileSyntax } from 'esbuild-sass-plugin/lib/utils';
-import { App, DataWriteOptions, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
+import { App, DataWriteOptions, debounce, Editor, MarkdownView, MarkdownViewModeType, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder, Vault } from 'obsidian';
 import { PluginSettings } from 'src/types/PluginSettings';
 import { tagSuggestionExtension } from './extensions/tag-suggestion-block-widget/tag-suggestion-block-widget';
+import { refreshTagSuggestions } from './logic/tag-calculations';
 
 
 
@@ -30,6 +31,12 @@ export default class KeepPlugin extends Plugin {
 
 	async onload() {
 		await this.loadSettings();
+
+
+		// Remember a reference to this plugin
+		console.log('plugin', this);
+
+
 		
 		// this.addCommand({
 		// 	id: 'ublik-om_import-google-keep-jsons',
@@ -44,14 +51,13 @@ export default class KeepPlugin extends Plugin {
 		// 	console.log('file', file);
 		// }));
 
-		// this.registerEvent(this.app.vault.on('modify', (file) => {
-		// 	if(!this.pluginUpdatedFileLast) {
-		// 		updateTagSelector(this.app.vault, file as TFile);
-		// 		this.pluginUpdatedFileLast = true;
-		// 	} else {
-		// 		this.pluginUpdatedFileLast = false;
-		// 	}
-		// }));
+		this.registerEvent(this.app.vault.on('modify', (file) => {
+			if(file instanceof TFile) {
+				refreshTagSuggestions(file)
+				// debounce(() => refreshTagSuggestions(file), 5000);	// TODO: Why isn't this working?
+			}
+			console.log('file modified');
+		}));
 		
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		// this.addSettingsTab(new MySettingsTab(this.app, this));
