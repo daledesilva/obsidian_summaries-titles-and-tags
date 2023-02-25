@@ -25,8 +25,6 @@ export const App = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const suggestions = useSelector((state) => state.store.suggestions);  // TODO: How to define this type?
 
-  console.log('suggestions', suggestions);
-
 
   return <>
     <div
@@ -50,6 +48,7 @@ export const App = (props: Props) => {
     </div>
   </>;
 };
+
 
 
 

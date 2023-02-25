@@ -38,12 +38,12 @@ export const TagSuggestion = (options: TagOptions) => {
         {tagName}
       </button>
 
-      <button
+      {/* <button
         className = 'uo_tag-overflow'
         onClick = {() => setIsOpen(true)}
         >
         &#8230;
-      </button>
+      </button> */}
 
     </div>
   </>;

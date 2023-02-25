@@ -14,14 +14,7 @@
     .uo_tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 1em;
-
-        .uo_tag-suggestion {
-
-            .uo_tag-overflow {
-                opacity: 0.4;
-            }
-        }
+        gap: 1em 0.3em;
     }
 
 }
