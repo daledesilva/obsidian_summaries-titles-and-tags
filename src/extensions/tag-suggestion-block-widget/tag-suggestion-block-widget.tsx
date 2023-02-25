@@ -13,11 +13,10 @@ import * as ReactDom from "react-dom";
 import { createRoot } from "react-dom/client";
 import { App } from './app';
 
+import { Provider } from 'react-redux';
+import store from 'src/logic/store';
 
-import { createContext } from 'react';
 import KeepPlugin from "src/main";
-export const PluginContext = createContext(null);
-export const VaultContext = createContext(null);
 
 
 export class TagSuggestionBlockWidget extends WidgetType {
@@ -36,20 +35,16 @@ export class TagSuggestionBlockWidget extends WidgetType {
 
 		// TODO: Explicitly decide what to do with different view modes
 
-		// root.render(
-		// 	// <Provider store>
-		// 	// 	<PluginContext.Provider value={this.plugin}>
-		// 	// 	<VaultContext.Provider value={this.vault}>
-		// 			<App/>
-		// 		{/* </VaultContext.Provider>
-		// 	</PluginContext.Provider>}
-		// 	</Provider> */}
-		// );
-		root.render(<App plugin={this.plugin}/>);
+		root.render(
+			<Provider store={store}>
+				<App plugin={this.plugin}/>
+			</Provider>
+		);
 		return rootEl;
 	}
 
 }
+
 
 
 // Define a StateField to monitor the state of all these decorations in the set

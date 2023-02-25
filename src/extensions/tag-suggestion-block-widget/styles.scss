@@ -13,7 +13,15 @@
 
     .uo_tags {
         display: flex;
+        flex-wrap: wrap;
         gap: 1em;
+
+        .uo_tag-suggestion {
+
+            .uo_tag-overflow {
+                opacity: 0.4;
+            }
+        }
     }
 
 }

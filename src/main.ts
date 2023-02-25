@@ -4,6 +4,8 @@ import { PluginSettings } from 'src/types/PluginSettings';
 import { tagSuggestionExtension } from './extensions/tag-suggestion-block-widget/tag-suggestion-block-widget';
 import { refreshTagSuggestions } from './logic/tag-calculations';
 
+import store, { replaceSuggestions } from 'src/logic/store';
+
 
 
 export const DEFAULT_SETTINGS: PluginSettings = {
@@ -82,7 +84,7 @@ export default class KeepPlugin extends Plugin {
 
 			// Match sections that are only numbers
 			const numberOnlyWords = /(?<=^|\s|\n)[0-9]+(?=\s|\n|$)/;
-			console.log( contentStr.match( new RegExp(numberOnlyWords.source, 'g') ) );
+			// console.log( contentStr.match( new RegExp(numberOnlyWords.source, 'g') ) );
 
 			
 
@@ -94,6 +96,10 @@ export default class KeepPlugin extends Plugin {
 
 			/// remove all apostrophies as they can't be in the hashtags to be created later
 			contentStr = contentStr.split("'").join('');
+
+			// TODO: Remove anything between a code block
+
+			// TODO: Remove anything in a link or other obsidian feature
 
 			// Convert all to lowercase
 			contentStr = contentStr.toLowerCase();
@@ -134,6 +140,7 @@ export default class KeepPlugin extends Plugin {
 			});
 			
 			// Add to redux store
+			store.dispatch( replaceSuggestions(suggestionsArr) );
 
 		}));
 		
