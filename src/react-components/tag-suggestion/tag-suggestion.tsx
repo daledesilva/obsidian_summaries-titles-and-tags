@@ -1,8 +1,8 @@
-import { TFile, Vault } from "obsidian";
+import { Editor, EditorPosition, MarkdownView, TFile, Vault } from "obsidian";
 import * as React from "react";
 import { useState } from "react";
 import { useContext } from 'react';
-import { VaultContext } from 'src/extensions/tag-suggestion-block-widget/tag-suggestion-block-widget';
+import KeepPlugin from "src/main";
 
 // Import scss file so that compiler adds it.
 // This is instead of injecting it using EditorView.baseTheme
@@ -12,16 +12,17 @@ import './styles.scss';
 
 interface TagOptions {
 	tagName: string,
-  file: TFile,
+  plugin: KeepPlugin,
 }
 
 export const TagSuggestion = (options: TagOptions) => {
 
-  const { tagName, file } = options;
+  const { tagName, plugin } = options;
   const [isOpen, setIsOpen] = useState(false);
-  const vault = useContext(VaultContext);
 
-  console.log('vault', vault);
+  console.log('plugin', plugin);
+
+
   // Change tag name to lowercase
 
   // Check if tag name should suggest a different word
@@ -34,7 +35,7 @@ export const TagSuggestion = (options: TagOptions) => {
 
       <button
         className = 'uo_tag-name'
-        // onClick = {() => addTag(tagName, file, vault)}
+        onClick = {() => addTag(tagName, plugin)}
         >
         {tagName}
       </button>
@@ -53,11 +54,26 @@ export const TagSuggestion = (options: TagOptions) => {
 
 
 
-function addTag(tagName: string, file: TFile, vault: Vault) {
+function addTag(tagName: string, plugin: KeepPlugin) {
+  const view = plugin.app.workspace.getActiveViewOfType(MarkdownView);
 
-  // Add in tags to represent Keep properties
+  if(!view) {
+    console.log(`No active view`);
+    return;
+  }
+
   try {
-    vault.append(file, `#${tagName} `);
+    const firstLineLength = view.editor.getLine(0).length;
+    const range: EditorPosition = {
+      line: 0,
+      ch: firstLineLength,
+    }
+    if(firstLineLength > 0) {
+      view.editor.replaceRange(` #${tagName}`, range);
+    } else {
+      view.editor.replaceRange(`#${tagName}`, range);
+    }
+    
   } catch (error) {
     console.log(`Error adding tag ${tagName} to the file.`);
   }

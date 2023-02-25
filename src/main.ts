@@ -71,7 +71,7 @@ export default class KeepPlugin extends Plugin {
 
 
 		this.registerEditorExtension([
-			tagSuggestionExtension(),
+			tagSuggestionExtension(this),
 		]);		
 
 	}

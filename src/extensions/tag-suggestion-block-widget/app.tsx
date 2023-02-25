@@ -14,10 +14,17 @@ import './styles.scss';
 
 
 
-export const App = (plugin: KeepPlugin) => {
+interface Props {
+	plugin: KeepPlugin;
+}
+
+
+export const App = (props: Props) => {
+  const {plugin} = props;
   const [isOpen, setIsOpen] = useState(false);
 
   console.log('plugin', plugin);
+
 
   return <>
     <div
@@ -32,12 +39,16 @@ export const App = (plugin: KeepPlugin) => {
       <div className='uo_tags'>
         <TagSuggestion
           tagName = 'gary'
+          plugin = {plugin}
         />
         <TagSuggestion
           tagName = 'tom'
+          plugin = {plugin}
         />
         <TagSuggestion
           tagName = 'lisa'
+          plugin = {plugin}
+          // file = {plugin.app.vault.file}
         />
       </div>
 
