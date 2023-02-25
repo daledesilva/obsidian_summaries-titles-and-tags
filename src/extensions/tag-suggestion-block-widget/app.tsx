@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { useState } from "react";
+import KeepPlugin from "src/main";
 
 
 import { TagSuggestion } from 'src/react-components/tag-suggestion/tag-suggestion';
@@ -13,8 +14,10 @@ import './styles.scss';
 
 
 
-export const App = () => {
+export const App = (plugin: KeepPlugin) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  console.log('plugin', plugin);
 
   return <>
     <div
@@ -41,4 +44,6 @@ export const App = () => {
     </div>
   </>;
 };
+
+
 

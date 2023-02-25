@@ -15,65 +15,82 @@ import { App } from './app';
 
 
 import { createContext } from 'react';
-export const PluginContext = createContext('test-plugin');
-export const VaultContext = createContext('test-vault');
+import KeepPlugin from "src/main";
+export const PluginContext = createContext(null);
+export const VaultContext = createContext(null);
 
 
 export class TagSuggestionBlockWidget extends WidgetType {
+
+	plugin: KeepPlugin;
+
+	constructor(plugin: KeepPlugin) {
+		super();
+		this.plugin = plugin;
+	}
+
 	toDOM(view: EditorView): HTMLElement {
 		const rootEl = document.createElement('div');
 		const root = createRoot(rootEl);
 
-		console.log('view', view);
-		// console.log('view.plugin', view.plugin();
-		// console.log('view.plugin.vault', view.plugin);
 
-		root.render(
-			// <Provider store={store}>
-			<PluginContext.Provider value={this.plugin}>
-			<VaultContext.Provider value={this.vault}>
-				<App
-					// viewMode={this.viewMode}
-				/>
-			</VaultContext.Provider>
-			</PluginContext.Provider>
-			// </Provider>
-		);
+		// TODO: Explicitly decide what to do with different view modes
+
+		// root.render(
+		// 	// <Provider store>
+		// 	// 	<PluginContext.Provider value={this.plugin}>
+		// 	// 	<VaultContext.Provider value={this.vault}>
+		// 			<App/>
+		// 		{/* </VaultContext.Provider>
+		// 	</PluginContext.Provider>}
+		// 	</Provider> */}
+		// );
+		root.render(<App plugin={this.plugin}/>);
 		return rootEl;
 	}
+
 }
-const myWidget = Decoration.widget({widget: new TagSuggestionBlockWidget()});
 
 
-// Define a StateField to monitor the state of all underline decorations in the set
-const myStateField = StateField.define<DecorationSet>({
-
-	// Starts with an empty DecorationSet
-	create(): DecorationSet {
-		let set = Decoration.none;
-		set = set.update({
-			add: [myWidget.range(0)]
-		})
-		return set;
-	},
+// Define a StateField to monitor the state of all these decorations in the set
+function createStatefieldAndWidget(plugin: KeepPlugin): StateField<DecorationSet> {
 	
-	update(oldState, transaction): DecorationSet {
-		// No updates needed
-		return oldState;
-	},
+	const myWidget = Decoration.widget({widget: new TagSuggestionBlockWidget(plugin)});
 
-	// Tell the editor to use these decorations (ie. provide them from this statefield)
-	provide(thisStateField): Extension {
-		return EditorView.decorations.from(thisStateField);
-	}
-})
+	const myStateField = StateField.define<DecorationSet>({
+
+		// Starts with an empty DecorationSet
+		create(): DecorationSet {
+			let set = Decoration.none;
+			set = set.update({
+				add: [myWidget.range(0)]
+			})
+			return set;
+		},
+		
+		update(oldState, transaction): DecorationSet {
+			// No updates needed
+			return oldState;
+		},
+	
+		// Tell the editor to use these decorations (ie. provide them from this statefield)
+		provide(thisStateField): Extension {
+			return EditorView.decorations.from(thisStateField);
+		}
+	})
+
+	return myStateField;
+
+}
 
 
 
-export function tagSuggestionExtension(): Extension {
+
+export function tagSuggestionExtension(plugin: KeepPlugin): Extension {
 	return [
-		myStateField,
+		createStatefieldAndWidget(plugin),
 	]
 }
+
 
 
