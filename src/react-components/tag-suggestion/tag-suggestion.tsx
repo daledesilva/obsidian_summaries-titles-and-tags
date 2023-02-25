@@ -20,8 +20,6 @@ export const TagSuggestion = (options: TagOptions) => {
   const { tagName, plugin } = options;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('plugin', plugin);
-
 
   // Change tag name to lowercase
 
@@ -61,6 +59,8 @@ function addTag(tagName: string, plugin: KeepPlugin) {
     console.log(`No active view`);
     return;
   }
+
+  
 
   try {
     const firstLineLength = view.editor.getLine(0).length;

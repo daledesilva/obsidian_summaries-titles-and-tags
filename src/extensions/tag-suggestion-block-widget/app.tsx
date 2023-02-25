@@ -23,9 +23,6 @@ export const App = (props: Props) => {
   const {plugin} = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log('plugin', plugin);
-
-
   return <>
     <div
       className = {classNames(
