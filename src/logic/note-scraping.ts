@@ -6,12 +6,15 @@ export function createSuggestions(inputStr: string): Suggestion[] {
 
     // TODO: Create array of alias phrases found (Try both with and without sanitisation?)
     wipStr = morphEnglishToValidTags(wipStr);
-    wipStr = removeExistingTags(wipStr);
-    let validWords = getAllValidWords(wipStr);
+    let textAndTags = separateTextAndTags(wipStr);
+    let words = getAllValidWords(textAndTags.text);
     // TODO: Removed ignored words
     // TODO: Replace single word aliases
 
-    return wordsToSuggestions(validWords);
+    // Remove words that are the same as existing tags in the file
+    words = removeWords(words, textAndTags.tags); 
+
+    return wordsToSuggestions(words);
 }
 
 
@@ -26,23 +29,32 @@ function morphEnglishToValidTags(text: string): string {
 }
 
 
-function removeExistingTags(inputStr: string): string {
-    let outputStr: string, outputTags: string[];
+function separateTextAndTags(inputStr: string): { text: string, tags: string[] } {
+    let outputStr: string;
 
     // Match any single hashtag followed by valid tag characters... that are at the start of the string, after a space, or after a new line
-    const tags = /(?<=^|\s|\n)\#[\w\/\-]+/;
+    const tagsEq = /(?<=^|\s|\n)\#[\w\/\-]+/;
     // console.log( inputStr.match( new RegExp(tags.source, 'g') ) );
 
     // Remember all existing hashtags
-    // outputTags = inputStr.match(new RegExp(tags, 'g')) as string[];
+    const tags = inputStr.match(new RegExp(tagsEq, 'g')) as string[];
+    // Remove # from each
+    for (let i = 0; i < tags.length; i++) {
+        tags[i] = tags[i].slice(1).toLowerCase();
+    }
 
     // Remove all existing hashtags
-    outputStr = inputStr.split(new RegExp(tags, 'g')).join('');
+    outputStr = inputStr.split(new RegExp(tagsEq, 'g')).join('');
 
-    // Convert these to lowercase too so they can be equated to new words
-    // REVIEW: Perhaps they should be copied to the top of the file automatically?
+    // Remove any instances of those same hashtag words
+    for (let i = 0; i < tags.length; i++) {
+        outputStr = outputStr.split(tags[i]).join(' ');
+    }
 
-    return outputStr;
+    return {
+        text: outputStr,
+        tags: tags
+    }
 }
 
 
@@ -112,4 +124,10 @@ function wordsToSuggestions(words: string[]): Suggestion[] {
     });
 
     return suggestionsArr;
+}
+
+
+function removeWords(baseWords: string[], badWords: string[]): string[] {
+    const outputWords = baseWords.filter(word => !badWords.includes(word));
+    return outputWords;
 }
