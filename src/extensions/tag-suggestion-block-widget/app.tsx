@@ -41,6 +41,7 @@ export const App = (props: Props) => {
           <TagSuggestion
             tagName = {suggestion.tag}
             plugin = {plugin}
+            key = {suggestion.tag}
           />
         ))}
       </div>

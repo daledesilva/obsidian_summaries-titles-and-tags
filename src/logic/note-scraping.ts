@@ -1,12 +1,14 @@
+import { MarkdownView } from "obsidian";
+import KeepPlugin from "src/main";
 import { Suggestion } from "./store";
 
 
-export function createSuggestions(inputStr: string): Suggestion[] {
+export function createSuggestions(inputStr: string, plugin: KeepPlugin): Suggestion[] {
     let wipStr = inputStr;
 
     // TODO: Create array of alias phrases found (Try both with and without sanitisation?)
     wipStr = morphEnglishToValidTags(wipStr);
-    let textAndTags = separateTextAndTags(wipStr);
+    let textAndTags = separateTextAndTags(wipStr, plugin);
     let words = getAllValidWords(textAndTags.text);
     // TODO: Removed ignored words
     // TODO: Replace single word aliases
@@ -29,27 +31,38 @@ function morphEnglishToValidTags(text: string): string {
 }
 
 
-function separateTextAndTags(inputStr: string): { text: string, tags: string[] } {
+function separateTextAndTags(inputStr: string, plugin: KeepPlugin): { text: string, tags: string[] } {
     let outputStr: string;
 
     // Match any single hashtag followed by valid tag characters... that are at the start of the string, after a space, or after a new line
     const tagsEq = /(?<=^|\s|\n)\#[\w\/\-]+/;
     // console.log( inputStr.match( new RegExp(tags.source, 'g') ) );
 
-    // Remember all existing hashtags
+    // Remember all existing hashtags from note body
     const tags = inputStr.match(new RegExp(tagsEq, 'g')) as string[];
-    // Remove # from each
-    for (let i = 0; i < tags.length; i++) {
-        tags[i] = tags[i].slice(1).toLowerCase();
+    // Remove # from the start of each
+    if(tags) {
+        for (let i = 0; i < tags.length; i++) {
+            tags[i] = tags[i].slice(1).toLowerCase();
+        }
     }
-
-    // Remove all existing hashtags
+    
+    // Remove all existing hashtags from note's body
     outputStr = inputStr.split(new RegExp(tagsEq, 'g')).join('');
 
-    // Remove any instances of those same hashtag words
-    for (let i = 0; i < tags.length; i++) {
-        outputStr = outputStr.split(tags[i]).join(' ');
+    // add all tags from note's frontmatter
+    const frontmatterEq = /(?<=^---\n)([\s\S]*?)(?=\n---)/;
+    const frontmatter = inputStr.match( new RegExp(frontmatterEq, 'g') );
+    if(frontmatter) {
+        const fmTagsEq = /(?<=^tags?:)([\s\S]*?)(?=:\s|---)/;
+        const fmTags = frontmatter[0].match( new RegExp(fmTagsEq, 'm') );
+        if(fmTags) {
+            tags.push(...fmTags[0].split(' ').filter(Boolean));
+        }
     }
+    
+    // Remove frontmatter from note's body
+    outputStr = inputStr.split(new RegExp(frontmatterEq, 'g')).join('');
 
     return {
         text: outputStr,
@@ -128,6 +141,7 @@ function wordsToSuggestions(words: string[]): Suggestion[] {
 
 
 function removeWords(baseWords: string[], badWords: string[]): string[] {
+    if(!badWords) return baseWords;
     const outputWords = baseWords.filter(word => !badWords.includes(word));
     return outputWords;
 }

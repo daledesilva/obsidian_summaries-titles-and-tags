@@ -20,12 +20,7 @@ export const TagSuggestion = (options: TagOptions) => {
   const { tagName, plugin } = options;
   const [isOpen, setIsOpen] = useState(false);
 
-
-  // Change tag name to lowercase
-
-  // Check if tag name should suggest a different word
-
-
+  
   return <>
     <div
       className = 'uo_tag-suggestion'
@@ -53,30 +48,40 @@ export const TagSuggestion = (options: TagOptions) => {
 
 
 function addTag(tagName: string, plugin: KeepPlugin) {
-  const view = plugin.app.workspace.getActiveViewOfType(MarkdownView);
-
-  if(!view) {
-    console.log(`No active view`);
-    return;
-  }
-
-  
+  const mdEditorView = plugin.app.workspace.getActiveViewOfType(MarkdownView);
+  if(!mdEditorView) { return; }
 
   try {
-    const firstLineLength = view.editor.getLine(0).length;
-    const range: EditorPosition = {
-      line: 0,
-      ch: firstLineLength,
-    }
-    if(firstLineLength > 0) {
-      view.editor.replaceRange(` #${tagName}`, range);
-    } else {
-      view.editor.replaceRange(`#${tagName}`, range);
-    }
-    
+    plugin.app.fileManager.processFrontMatter(mdEditorView.file, (frontmatter) => {
+      // TODO: Check if it's tag or tags
+      if(frontmatter.tags) {
+        frontmatter.tags += ' ' + tagName;
+      } else if(frontmatter.tag) {
+        frontmatter.tag += ' ' + tagName;
+      } else {
+        frontmatter.tags = tagName;
+      }
+    });
   } catch (error) {
-    console.log(`Error adding tag ${tagName} to the file.`);
+    console.log(`Error adding tag ${tagName} to the file's frontmatter.`);
   }
+  
+  // OR, if wanted at top of file
+
+  // try {
+  //   const firstLineLength = mdEditorView.editor.getLine(0).length;
+  //   const range: EditorPosition = {
+  //     line: 0,
+  //     ch: firstLineLength,
+  //   }
+  //   if(firstLineLength > 0) {
+  //     mdEditorView.editor.replaceRange(` #${tagName}`, range);
+  //   } else {
+  //     mdEditorView.editor.replaceRange(`#${tagName}`, range);
+  //   } 
+  // } catch (error) {
+  //   console.log(`Error adding tag ${tagName} to the file.`);
+  // }
 
 
 }

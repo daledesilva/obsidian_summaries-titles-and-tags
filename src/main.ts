@@ -59,9 +59,8 @@ export default class KeepPlugin extends Plugin {
 			const mdEditorView = this.app.workspace.getActiveViewOfType(MarkdownView);
 			if(!mdEditorView) return;
 
-			const suggestions = createSuggestions(mdEditorView.editor.getValue());
-			store.dispatch( replaceSuggestions(suggestions) );
-		
+			const suggestions = createSuggestions(mdEditorView.editor.getValue(), this);
+			store.dispatch( replaceSuggestions(suggestions) );		
 		}));
 
 
@@ -69,9 +68,8 @@ export default class KeepPlugin extends Plugin {
 			const mdEditorView = this.app.workspace.getActiveViewOfType(MarkdownView);
 			if(!mdEditorView) return;
 
-			const suggestions = createSuggestions(mdEditorView.editor.getValue());
-			store.dispatch( replaceSuggestions(suggestions) );
-		
+			const suggestions = createSuggestions(mdEditorView.editor.getValue(), this);
+			store.dispatch( replaceSuggestions(suggestions) );		
 		}));
 
 
