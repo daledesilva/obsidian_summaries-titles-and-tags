@@ -16,14 +16,14 @@ import { App } from './app';
 import { Provider } from 'react-redux';
 import store from 'src/logic/store';
 
-import KeepPlugin from "src/main";
+import AutoEasyTaggerPlugin from "src/main";
 
 
 export class TagSuggestionBlockWidget extends WidgetType {
 
-	plugin: KeepPlugin;
+	plugin: AutoEasyTaggerPlugin;
 
-	constructor(plugin: KeepPlugin) {
+	constructor(plugin: AutoEasyTaggerPlugin) {
 		super();
 		this.plugin = plugin;
 	}
@@ -48,7 +48,7 @@ export class TagSuggestionBlockWidget extends WidgetType {
 
 
 // Define a StateField to monitor the state of all these decorations in the set
-function createStatefieldAndWidget(plugin: KeepPlugin): StateField<DecorationSet> {
+function createStatefieldAndWidget(plugin: AutoEasyTaggerPlugin): StateField<DecorationSet> {
 	
 	const myWidget = Decoration.widget({widget: new TagSuggestionBlockWidget(plugin)});
 
@@ -81,7 +81,7 @@ function createStatefieldAndWidget(plugin: KeepPlugin): StateField<DecorationSet
 
 
 
-export function tagSuggestionExtension(plugin: KeepPlugin): Extension {
+export function tagSuggestionExtension(plugin: AutoEasyTaggerPlugin): Extension {
 	return [
 		createStatefieldAndWidget(plugin),
 	]

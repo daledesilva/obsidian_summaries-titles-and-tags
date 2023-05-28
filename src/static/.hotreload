@@ -6,8 +6,18 @@
 
 Also, set up a symbolic link in the obsidian vaul's plugins directory to your plugin's dist folder so it automatically get's published there while developing.
 The hotlink will then handle the auto reloading of it.
-ln -s /abs-path/to/original /path/to/link
 
+ie. Mac:
+<ln -s /abs-path/to/original /path/to/link>
 ln -s <drag in dist folder for abs ref> ../
+
+ie. Windows:
+<mklink /D name-of-link /abs-path/to/original-folder>
+mklink /D summaries-titles-and-tags <drag in dist folder for abs ref>
+
+(Note, on Windows, open a command prompt in adminstrator mode. And note that the above creates a soft/symbolic link, not a hard link. This is because I sync with dropbox and a hard link will look like a normal folder to dropbox and will therefore become decouple from it's link as dropbox syncs it. Soft links won't be sync'd by dropbox because they are platform specific).
+
+
+----
 
 The plugin directory is in the obsidian vault. On mac, press cmd + shift + . to see hidden files and folders)

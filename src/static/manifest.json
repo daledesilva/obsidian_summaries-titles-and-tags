@@ -1,11 +1,11 @@
 {
-	"id": "ublik-om_auto-easy-tagger",
-	"name": "Auto Easy Tagger",
+	"id": "summaries-titles-and-tags",
+	"name": "Summaries, Titles & Tags",
 	"version": "0.0.1",
 	"minAppVersion": "1.00.0",
-	"description": "Provides tag suggestions at the top of each note.",
+	"description": "Auto generates a title, summary and tags for any markdown note.",
 	"author": "Dale de Silva",
-	"authorUrl": "https://ublik-om.net",
+	"authorUrl": "https://designdebt.club",
 	"fundingUrl": "https://twitter.com/daledesilva",
 	"isDesktopOnly": false
 }

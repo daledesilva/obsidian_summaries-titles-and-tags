@@ -1,9 +1,9 @@
 import { MarkdownView } from "obsidian";
-import KeepPlugin from "src/main";
+import AutoEasyTaggerPlugin from "src/main";
 import { Suggestion } from "./store";
 
 
-export function createSuggestions(inputStr: string, plugin: KeepPlugin): Suggestion[] {
+export function createSuggestions(inputStr: string, plugin: AutoEasyTaggerPlugin): Suggestion[] {
     let wipStr = inputStr;
 
     // TODO: Create array of alias phrases found (Try both with and without sanitisation?)
@@ -31,7 +31,7 @@ function morphEnglishToValidTags(text: string): string {
 }
 
 
-function separateTextAndTags(inputStr: string, plugin: KeepPlugin): { text: string, tags: string[] } {
+function separateTextAndTags(inputStr: string, plugin: AutoEasyTaggerPlugin): { text: string, tags: string[] } {
     let outputStr: string;
 
     // Match any single hashtag followed by valid tag characters... that are at the start of the string, after a space, or after a new line

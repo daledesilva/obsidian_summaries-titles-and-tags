@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { useState } from "react";
-import KeepPlugin from "src/main";
+import AutoEasyTaggerPlugin from "src/main";
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TagSuggestion } from 'src/react-components/tag-suggestion/tag-suggestion';
@@ -16,7 +16,7 @@ import { State, Suggestion } from "src/logic/store";
 
 
 interface Props {
-	plugin: KeepPlugin;
+	plugin: AutoEasyTaggerPlugin;
 }
 
 
@@ -34,7 +34,7 @@ export const App = (props: Props) => {
       )}
       >
       
-      <h2>Tag Suggestions</h2>
+      {/* <h2>Tag Suggestions</h2>
 
       <div className='uo_tags'>
         {suggestions.map( (suggestion: Suggestion) => (
@@ -44,7 +44,7 @@ export const App = (props: Props) => {
             key = {suggestion.tag}
           />
         ))}
-      </div>
+      </div> */}
 
     </div>
   </>;

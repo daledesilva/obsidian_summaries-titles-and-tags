@@ -3,22 +3,19 @@ import process from "process";
 import builtins from 'builtin-modules';
 import {sassPlugin} from 'esbuild-sass-plugin'
 import { copy } from 'esbuild-plugin-copy';
-
-
-// import renamePlugin from "./rename-plugin";
 import fs from 'fs';
 
 const renamePlugin = () => ({
-	name: 'rename-plugin',
-	setup(build) {
-		build.onEnd(async () => {
-			try {
-				fs.renameSync('./dist/main.css', './dist/styles.css');
-			} catch (e) {
-				console.error('Failed to rename file:', e);
-			}
-		});
-	},
+  name: 'rename-plugin',
+  setup(build) {
+    build.onEnd(async () => {
+      try {
+        fs.renameSync('./dist/main.css', './dist/styles.css');
+      } catch (e) {
+        console.error('Failed to rename file:', e);
+      }
+    });
+  },
 });
 
 
