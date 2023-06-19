@@ -1,8 +1,10 @@
 import { TFile } from "obsidian";
 import SummariesTitlesAndTagsPlugin from "src/main";
-import { countWords, filenameSanitize, removeBodyTags, removeFrontmatter, sanitizeFilename, sanitizeKebabCase, splitMarkdownIntoClumps } from "./string-processes";
+import { countWords, removeFrontmatter, sanitizeKebabCase, splitMarkdownIntoClumps } from "./string-processes";
 import { TitleCapitalisation } from "src/types/PluginSettings";
 import { Configuration, OpenAIApi } from "openai";
+import { applyLongSummary, applyShortSummary, applyTags, applyTitle } from "./frontmatter-processes";
+import { askOpenAi } from "./openai-agent";
 
 
 
@@ -21,7 +23,7 @@ export async function processNote(file: TFile, plugin: SummariesTitlesAndTagsPlu
   const query = constructTitleTagsAndSummariesQuery(promptableContent, plugin);
   console.log('query', query);
 
-  const response = await askChatAgent(query, plugin);
+  const response = await askOpenAi(query, plugin);
   if(response == null || response == undefined) return;
   console.log('response', response);
   const responseData = parseResponse(response);
@@ -153,48 +155,6 @@ function constructTitleTagsAndSummariesQuery(noteContent: string, plugin: Summar
 }
 
 
-// Fetch response from agent
-////////////////////////////
-async function askChatAgent(query: string, plugin: SummariesTitlesAndTagsPlugin) {
-  const s = plugin.settings;
-
-  const configuration = new Configuration({
-    apiKey: s.openApiKey,
-  });
-  delete configuration.baseOptions.headers['User-Agent']; // This prevents the error: Refused to set unsafe header "User-Agent"
-  const openai = new OpenAIApi(configuration);
-  let response;
-  try {
-    response = await openai.createChatCompletion({
-      model: s.aiModel,
-      messages: [
-        // {"role": "system", "content": "You are a helpful assistant that translates English to French."},
-        {"role": "user", "content": query}
-        // {"role": "user", "content": context + '\n' + question}
-      ],
-      // temperature: 0,
-      // max_tokens: 10,
-      top_p: 1,
-      temperature: 1,
-      // stream: true,
-      // maxRetries: 0,
-    });
-  } catch(error) {
-    if (error.response) {
-      const headers = error.response.headers;
-      const body = error.response.body;
-  
-      console.log('Headers:', headers);
-      console.log('Body:', body);
-    } else {
-      console.log('Error:', error);
-    }
-  }
-
-  return response;
-}
-
-
 function parseResponse(response: object): {tags:string[], shortSummary:string, longSummary:string, title:string} {
   // Parse response
   /////////////////
@@ -221,58 +181,6 @@ function parseResponse(response: object): {tags:string[], shortSummary:string, l
   return data;
 }
 
-
-async function applyTags(tags: string[], file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
-  const s = plugin.settings;
-
-  try {
-    await plugin.app.fileManager.processFrontMatter(file, (frontmatter) => {      
-      if(!frontmatter[s.frontmatterTagsKeyword]) {
-        frontmatter[s.frontmatterTagsKeyword] = tags.join(' ');
-      } else {
-        frontmatter[s.frontmatterTagsKeyword] += ' ' + tags.join(' ');
-      }
-    });
-  } catch (error) {
-    console.log(`Error adding tags to the file's frontmatter.`);
-  }
-}
-
-async function applyShortSummary(shortSummary: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
-  const s = plugin.settings;
-
-  try {
-    await plugin.app.fileManager.processFrontMatter(file, (frontmatter) => {
-      frontmatter[s.frontmatterShortSummaryKeyword] = shortSummary;
-    });
-  } catch (error) {
-    console.log(`Error adding short summary to the file's frontmatter.`);
-  }
-}
-
-async function applyLongSummary(longSummary: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
-  const s = plugin.settings;
-
-  try {
-    await plugin.app.fileManager.processFrontMatter(file, (frontmatter) => {
-      frontmatter[s.frontmatterSummaryKeyword] = longSummary;
-    });
-  } catch (error) {
-    console.log(`Error adding long summary to the file's frontmatter.`);
-  }
-}
-
-async function applyTitle(title: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
-  const s = plugin.settings;
-
-  try {
-    const lastSlashIndex = file.path.lastIndexOf('/');
-    let path = file.path.substring(0, lastSlashIndex + 1);
-    await this.app.vault.rename(file, path + sanitizeFilename(title) + '.md');
-  } catch (error) {
-    console.error('Failed to change note title:', error);
-  }
-}
 
 
 
