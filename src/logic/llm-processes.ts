@@ -1,5 +1,5 @@
 import { TFile } from "obsidian";
-import AutoEasyTaggerPlugin from "src/main";
+import SummariesTitlesAndTagsPlugin from "src/main";
 import { countWords, filenameSanitize, removeBodyTags, removeFrontmatter, sanitizeFilename, sanitizeKebabCase, splitMarkdownIntoClumps } from "./string-processes";
 import { TitleCapitalisation } from "src/types/PluginSettings";
 import { Configuration, OpenAIApi } from "openai";
@@ -10,7 +10,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 
 
-export async function processNote(file: TFile, plugin: AutoEasyTaggerPlugin) {
+export async function processNote(file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
   console.log('PROCESSING NOTE');
   const s = plugin.settings;
   
@@ -23,9 +23,9 @@ export async function processNote(file: TFile, plugin: AutoEasyTaggerPlugin) {
 
   const response = await askChatAgent(query, plugin);
   if(response == null || response == undefined) return;
-  console.log('response', response)
+  console.log('response', response);
   const responseData = parseResponse(response);
-  console.log('responseData', responseData)
+  console.log('responseData', responseData);
 
   await applyTags(responseData.tags, file, plugin);
   await applyShortSummary(responseData.shortSummary, file, plugin);
@@ -47,7 +47,7 @@ async function extractRelevantContent(file: TFile) {
 
 // Reduce note if too long
 // Make this function recursive when necessary
-async function makePromptableLength(str: string, plugin: AutoEasyTaggerPlugin) {
+async function makePromptableLength(str: string, plugin: SummariesTitlesAndTagsPlugin) {
   const splitContent = splitMarkdownIntoClumps(str);
   let promptableContent = '';
   
@@ -71,7 +71,7 @@ async function makePromptableLength(str: string, plugin: AutoEasyTaggerPlugin) {
 }
 
 
-function constructTitleTagsAndSummariesQuery(noteContent: string, plugin: AutoEasyTaggerPlugin): string {
+function constructTitleTagsAndSummariesQuery(noteContent: string, plugin: SummariesTitlesAndTagsPlugin): string {
   const s = plugin.settings;
 
   // Create TitleTagsAndSummaries query
@@ -155,7 +155,7 @@ function constructTitleTagsAndSummariesQuery(noteContent: string, plugin: AutoEa
 
 // Fetch response from agent
 ////////////////////////////
-async function askChatAgent(query: string, plugin: AutoEasyTaggerPlugin) {
+async function askChatAgent(query: string, plugin: SummariesTitlesAndTagsPlugin) {
   const s = plugin.settings;
 
   const configuration = new Configuration({
@@ -222,7 +222,7 @@ function parseResponse(response: object): {tags:string[], shortSummary:string, l
 }
 
 
-async function applyTags(tags: string[], file: TFile, plugin: AutoEasyTaggerPlugin) {
+async function applyTags(tags: string[], file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
   const s = plugin.settings;
 
   try {
@@ -238,7 +238,7 @@ async function applyTags(tags: string[], file: TFile, plugin: AutoEasyTaggerPlug
   }
 }
 
-async function applyShortSummary(shortSummary: string, file: TFile, plugin: AutoEasyTaggerPlugin) {
+async function applyShortSummary(shortSummary: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
   const s = plugin.settings;
 
   try {
@@ -250,7 +250,7 @@ async function applyShortSummary(shortSummary: string, file: TFile, plugin: Auto
   }
 }
 
-async function applyLongSummary(longSummary: string, file: TFile, plugin: AutoEasyTaggerPlugin) {
+async function applyLongSummary(longSummary: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
   const s = plugin.settings;
 
   try {
@@ -262,7 +262,7 @@ async function applyLongSummary(longSummary: string, file: TFile, plugin: AutoEa
   }
 }
 
-async function applyTitle(title: string, file: TFile, plugin: AutoEasyTaggerPlugin) {
+async function applyTitle(title: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
   const s = plugin.settings;
 
   try {
@@ -276,7 +276,7 @@ async function applyTitle(title: string, file: TFile, plugin: AutoEasyTaggerPlug
 
 
 
-async function shortenToPercentage(str: string, percGoal: number, plugin: AutoEasyTaggerPlugin): Promise<string> {
+async function shortenToPercentage(str: string, percGoal: number, plugin: SummariesTitlesAndTagsPlugin): Promise<string> {
   // Consider converting percentage to word count
   // console.log('PROCESSING CLUMP');
   const s = plugin.settings;

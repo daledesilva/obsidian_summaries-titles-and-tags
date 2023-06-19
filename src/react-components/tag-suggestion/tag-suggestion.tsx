@@ -2,7 +2,7 @@ import { Editor, EditorPosition, MarkdownView, TFile, Vault } from "obsidian";
 import * as React from "react";
 import { useState } from "react";
 import { useContext } from 'react';
-import AutoEasyTaggerPlugin from "src/main";
+import SummariesTitlesAndTagsPlugin from "src/main";
 
 // Import scss file so that compiler adds it.
 // This is instead of injecting it using EditorView.baseTheme
@@ -12,7 +12,7 @@ import './styles.scss';
 
 interface TagOptions {
 	tagName: string,
-  plugin: AutoEasyTaggerPlugin,
+  plugin: SummariesTitlesAndTagsPlugin,
 }
 
 export const TagSuggestion = (options: TagOptions) => {
@@ -47,7 +47,7 @@ export const TagSuggestion = (options: TagOptions) => {
 
 
 
-function addTag(tagName: string, plugin: AutoEasyTaggerPlugin) {
+function addTag(tagName: string, plugin: SummariesTitlesAndTagsPlugin) {
   const mdEditorView = plugin.app.workspace.getActiveViewOfType(MarkdownView);
   if(!mdEditorView) { return; }
 

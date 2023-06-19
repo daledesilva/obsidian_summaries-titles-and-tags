@@ -1,10 +1,10 @@
 import { Menu, ToggleComponent, ButtonComponent, Notice, App } from "obsidian";
-import AutoEasyTaggerPlugin from "src/main";
+import SummariesTitlesAndTagsPlugin from "src/main";
 // import { EnhancedApp, EnhancedMenu, EnhancedMenuItem } from "src/settings/type";
 
 
 
-export default function snippetsMenu( app: App, plugin: AutoEasyTaggerPlugin ) {
+export default function snippetsMenu( app: App, plugin: SummariesTitlesAndTagsPlugin ) {
   const windowX = window.innerWidth;
   const windowY = window.innerHeight;
   const menuExists = document.querySelector(".menu.MySnippets-statusbar-menu");

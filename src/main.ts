@@ -57,7 +57,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
 /**
  * The base plugin class initialised by Obsidian on launch
  */
-export default class AutoEasyTaggerPlugin extends Plugin {
+export default class SummariesTitlesAndTagsPlugin extends Plugin {
 	settings: PluginSettings;
 	pluginUpdatedFileLast: boolean;
 	statusBarItem: HTMLElement;

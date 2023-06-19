@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { useState } from "react";
-import AutoEasyTaggerPlugin from "src/main";
+import SummariesTitlesAndTagsPlugin from "src/main";
 import { useSelector, useDispatch } from 'react-redux';
 
 import { TagSuggestion } from 'src/react-components/tag-suggestion/tag-suggestion';
@@ -16,7 +16,7 @@ import { State, Suggestion } from "src/logic/store";
 
 
 interface Props {
-	plugin: AutoEasyTaggerPlugin;
+	plugin: SummariesTitlesAndTagsPlugin;
 }
 
 

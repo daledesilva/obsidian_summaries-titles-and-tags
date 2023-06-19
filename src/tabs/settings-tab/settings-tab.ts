@@ -20,7 +20,7 @@ export class MySettingsTab extends PluginSettingTab {
 		containerEl.empty();
 
 		containerEl.createEl('h1', {text: 'Summaries, Titles & Tags'});
-		containerEl.createEl('p', {text: 'Chat GPT and what not.'});
+		containerEl.createEl('p', {text: 'Note that Chat GPT may not pay attention to all settings, but the plugin will do it\'s best to adhere to the settings.'});
 
 		containerEl.createEl('hr');
 		containerEl.createEl('h2', {text: 'Basics'});
