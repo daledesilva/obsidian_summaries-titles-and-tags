@@ -82,12 +82,14 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 		this.addCommand({
 			id: 'aet_process-active-note',
 			name: 'Process active note',
-			callback: () => {
+			callback: async () => {
 				const mdEditorView = this.app.workspace.getActiveViewOfType(MarkdownView);
 				if(!mdEditorView) return;
 				
-				const activeFile = mdEditorView.file as TFile;				
-				processNote(activeFile, this);
+				const activeFile = mdEditorView.file as TFile;		
+				this.updateProgress(activeFile.basename, 50);		
+				await processNote(activeFile, this);
+				this.updateProgress('Done', 100);
 				
 			}
 		});

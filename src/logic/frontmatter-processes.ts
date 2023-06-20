@@ -54,7 +54,7 @@ export async function applyTitle(title: string, file: TFile, plugin: SummariesTi
         const lastSlashIndex = file.path.lastIndexOf('/');
         const path = file.path.substring(0, lastSlashIndex + 1);
         const safeFilename = sanitizeFilename(title);
-        let fileSuffix = 0;
+        let fileSuffix = 1;
         let fullPath = `${path + safeFilename}.md`;
         if(fullPath === file.path) {
             // It's already got this filename and title, so just skip renaming

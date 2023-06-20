@@ -29,9 +29,9 @@ export async function processNote(file: TFile, plugin: SummariesTitlesAndTagsPlu
   const responseData = parseResponse(response);
   // console.log('responseData', responseData);
 
-  // await applyTags(responseData.tags, file, plugin);
-  // await applyShortSummary(responseData.shortSummary, file, plugin);
-  // await applyLongSummary(responseData.longSummary, file, plugin);
+  await applyTags(responseData.tags, file, plugin);
+  await applyShortSummary(responseData.shortSummary, file, plugin);
+  await applyLongSummary(responseData.longSummary, file, plugin);
   await applyTitle(responseData.title, file, plugin);
   
   // plugin.updateProgress(file.basename, 100);
