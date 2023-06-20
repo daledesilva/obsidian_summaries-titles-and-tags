@@ -11,7 +11,6 @@ export function createProgressBar(containerEl: HTMLElement) {
     const progressBarFg = progressBar.createDiv('aet_bar');
     
     function updateProgress(filename: string, percentage: number) {
-        console.log('setting progress');
         progressBar.setAttribute('aria-label', `processing ${filename}.md`);
         progressBarFg.style.width = percentage + '%';
     }

@@ -9,6 +9,7 @@ import { createSuggestions, getAllValidWords, getSuggestions, morphEnglishToVali
 import { processNote } from './logic/llm-processes';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
 import { createProgressBar, ProgressBar } from './components/progress-bar/progress-bar';
+import { processAllUnprocessedNotes } from './logic/admin-logic';
 
 
 
@@ -79,8 +80,8 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.addCommand({
-			id: 'aet_process-note',
-			name: 'Process note',
+			id: 'aet_process-active-note',
+			name: 'Process active note',
 			callback: () => {
 				const mdEditorView = this.app.workspace.getActiveViewOfType(MarkdownView);
 				if(!mdEditorView) return;
@@ -89,6 +90,12 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 				processNote(activeFile, this);
 				
 			}
+		});
+
+		this.addCommand({
+			id: 'aet_process-all-unprocessed-notes',
+			name: 'Process all unprocessed notes',
+			callback: () => processAllUnprocessedNotes(this),
 		});
 
 		// this.registerEvent(this.app.vault.on('create', (file) => {

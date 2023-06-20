@@ -4,7 +4,7 @@ import { countWords, removeFrontmatter, sanitizeKebabCase, splitMarkdownIntoClum
 import { TitleCapitalisation } from "src/types/PluginSettings";
 import { Configuration, OpenAIApi } from "openai";
 import { applyLongSummary, applyShortSummary, applyTags, applyTitle } from "./frontmatter-processes";
-import { askOpenAi } from "./openai-agent";
+import { askOpenAi } from "./llm-agents/openai-agent";
 
 
 
@@ -13,28 +13,28 @@ import { askOpenAi } from "./openai-agent";
 
 
 export async function processNote(file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
-  console.log('PROCESSING NOTE');
+  console.log(`PROCESSING `, file.basename);
   const s = plugin.settings;
   
-  plugin.updateProgress(file.basename, 0);
+  // plugin.updateProgress(file.basename, 0);
 
   const noteContent = await extractRelevantContent(file);
   const promptableContent = await makePromptableLength(noteContent, plugin);
   const query = constructTitleTagsAndSummariesQuery(promptableContent, plugin);
-  console.log('query', query);
+  // console.log('query', query);
 
   const response = await askOpenAi(query, plugin);
   if(response == null || response == undefined) return;
-  console.log('response', response);
+  // console.log('response', response);
   const responseData = parseResponse(response);
-  console.log('responseData', responseData);
+  // console.log('responseData', responseData);
 
-  await applyTags(responseData.tags, file, plugin);
-  await applyShortSummary(responseData.shortSummary, file, plugin);
-  await applyLongSummary(responseData.longSummary, file, plugin);
+  // await applyTags(responseData.tags, file, plugin);
+  // await applyShortSummary(responseData.shortSummary, file, plugin);
+  // await applyLongSummary(responseData.longSummary, file, plugin);
   await applyTitle(responseData.title, file, plugin);
   
-  plugin.updateProgress(file.basename, 100);
+  // plugin.updateProgress(file.basename, 100);
 }
 
 

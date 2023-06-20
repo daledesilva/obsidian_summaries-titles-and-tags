@@ -1,4 +1,4 @@
-import { TFile } from "obsidian";
+import { TAbstractFile, TFile } from "obsidian";
 import SummariesTitlesAndTagsPlugin from "src/main";
 import { sanitizeFilename } from "./string-processes";
 
@@ -47,11 +47,36 @@ export async function applyLongSummary(longSummary: string, file: TFile, plugin:
 
 export async function applyTitle(title: string, file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
     const s = plugin.settings;
+    const v = plugin.app.vault;
 
+    
     try {
         const lastSlashIndex = file.path.lastIndexOf('/');
-        let path = file.path.substring(0, lastSlashIndex + 1);
-        await this.app.vault.rename(file, path + sanitizeFilename(title) + '.md');
+        const path = file.path.substring(0, lastSlashIndex + 1);
+        const safeFilename = sanitizeFilename(title);
+        let fileSuffix = 0;
+        let fullPath = `${path + safeFilename}.md`;
+        if(fullPath === file.path) {
+            // It's already got this filename and title, so just skip renaming
+            console.log('ALREADY NAMED THIS, so skipping');
+            return;
+        }
+
+        let existingFile: TAbstractFile | null;
+        console.log('Checking for file');
+        existingFile = v.getAbstractFileByPath(fullPath);
+        console.log('File checked: ', existingFile);
+        while(existingFile) {
+            console.log('File EXISTS!');
+            // File already exists, so give it a suffix or increment it and try again
+            fullPath = `${path + safeFilename} ${++fileSuffix}.md`;
+            console.log(`filename is already used for '${existingFile.name}', so trying '${fullPath}'`);
+            existingFile = v.getAbstractFileByPath(fullPath);
+        }        
+        console.log('Renaming file');
+        await this.app.vault.rename(file, fullPath);
+        console.log('Renamed');
+
     } catch (error) {
         console.error('Failed to change note title:', error);
     }
