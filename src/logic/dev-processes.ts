@@ -1,6 +1,6 @@
 import { TFile } from "obsidian";
 import SummariesTitlesAndTagsPlugin from "src/main";
-import { applyTitle } from "./frontmatter-processes";
+import { applyTags, applyTitle } from "./frontmatter-processes";
 
 
 ////////////////
@@ -15,9 +15,16 @@ export async function randomiseNoteName(file: TFile, plugin: SummariesTitlesAndT
     await applyTitle(newName, file, plugin);
 }
 
-export async function deleteFrontmatter(file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
+export async function deleteNoteFrontmatter(file: TFile, plugin: SummariesTitlesAndTagsPlugin) {
     console.log(`PROCESSING `, file.basename);
-    const s = plugin.settings;
-    
-    // await applyTags(responseData.tags, file, plugin);
+
+    try {
+        await plugin.app.fileManager.processFrontMatter(file, (frontmatter) => {
+            for(const key in frontmatter) {
+                delete frontmatter[key];
+            }
+        });
+    } catch (error) {
+        console.log(`Error deleting file's frontmatter.`);
+    }
 }
