@@ -17,35 +17,44 @@ export async function processNote(file: TFile, plugin: SummariesTitlesAndTagsPlu
   const s = plugin.settings;
   
   const noteContent = await extractRelevantContent(file);
-  console.log('Extracted content');
   const promptableContent = await makePromptableLength(noteContent, plugin);
-  console.log('Refined content');
   const query = constructTitleTagsAndSummariesQuery(promptableContent, plugin);
-  console.log('Constructed query');
   // console.log('query', query);
 
   const response = await askOpenAi(query, plugin);
   if(response == null || response == undefined) return;
   // console.log('response', response);
-  const responseData = parseResponse(response);
-  // console.log('responseData', responseData);
 
-  await applyTags(responseData.tags, file, plugin);
-  console.log('Applied tags');
-  await applyShortSummary(responseData.shortSummary, file, plugin);
-  console.log('Applied short summary');
-  await applyLongSummary(responseData.longSummary, file, plugin);
-  console.log('Applied long summary');
-  await applyTitle(responseData.title, file, plugin);
-  console.log('Applied title summary');
+  try {
+    const responseData = parseResponse(response);
+    // console.log('responseData', responseData);
+    await applyTags(responseData.tags, file, plugin);
+    await applyShortSummary(responseData.shortSummary, file, plugin);
+    await applyLongSummary(responseData.longSummary, file, plugin);
+    await applyTitle(responseData.title, file, plugin);
+
+  } catch(error) {
+    if (error.response) {
+      const headers = error.response.headers;
+      const body = error.response.body;
+  
+      console.log('Headers:', headers);
+      console.log('Body:', body);
+    } else {
+      console.log('Error:', error);
+    }
+  }
 }
 
 
 
 
 async function extractRelevantContent(file: TFile) {
+  console.log('--started extracting');
   let noteContent = await this.app.vault.read(file);
+  console.log('--got raw content');
   noteContent = removeFrontmatter(noteContent);
+  console.log('--removed frontmatter');
   // noteContent = removeBodyTags(noteContent); // This messes with headings, but also, sometimes hashtags can be words inside a sentence, so not sure I should remove
   return noteContent;
 }
@@ -164,7 +173,7 @@ function parseResponse(response: object): {tags:string[], shortSummary:string, l
 
   const rawResponseContent = response.data.choices[0].message.content;
   // console.log('rawResponseContent', rawResponseContent);
-  
+
   
   // console.log('-------SPLIT-------');
   const parsedResponseContent = rawResponseContent.split('<|>');

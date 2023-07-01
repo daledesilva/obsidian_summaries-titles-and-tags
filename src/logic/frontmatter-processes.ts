@@ -65,7 +65,6 @@ export async function applyTitle(title: string, file: TFile, plugin: SummariesTi
         let existingFile: TAbstractFile | null;
         existingFile = v.getAbstractFileByPath(fullPath);
         while(existingFile) {
-            console.log('File name already used, incrementing.');
             // File already exists, so give it a suffix or increment it and try again
             fullPath = `${path + safeFilename} ${++fileSuffix}.md`;
             console.log(`filename is already used for '${existingFile.name}', so trying '${fullPath}'`);
