@@ -9,7 +9,7 @@ import { createSuggestions, getAllValidWords, getSuggestions, morphEnglishToVali
 import { processNote } from './logic/llm-processes';
 import { MySettingsTab } from './tabs/settings-tab/settings-tab';
 import { createProgressBar, ProgressBar } from './components/progress-bar/progress-bar';
-import { processAllUnprocessedNotes } from './logic/admin-logic';
+import { processAllUnprocessedNotes, randomiseAllNoteNames } from './logic/admin-logic';
 
 
 
@@ -100,6 +100,22 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 			callback: () => processAllUnprocessedNotes(this),
 		});
 
+
+		// DEVELOPMENT ONLY
+		///////////////////
+
+		this.addCommand({
+			id: 'aet_randomise-all-note-names',
+			name: 'Randomise all note names',
+			callback: () => randomiseAllNoteNames(this),
+		});
+
+		this.addCommand({
+			id: 'aet_delete-all-frontmatter',
+			name: 'Delete frontmatter of all notes',
+			callback: () => randomiseAllNoteNames(this),
+		});
+
 		// this.registerEvent(this.app.vault.on('create', (file) => {
 		// 	console.log('a new file has entered the arena')
 		// 	console.log('file', file);
@@ -112,6 +128,7 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 		// 	}
 		// 	console.log('file modified');
 		// }));
+
 		this.registerEvent(this.app.vault.on('modify', (file) => {
 			const mdEditorView = this.app.workspace.getActiveViewOfType(MarkdownView);
 			if(!mdEditorView) return;
