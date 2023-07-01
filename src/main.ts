@@ -105,6 +105,15 @@ export default class SummariesTitlesAndTagsPlugin extends Plugin {
 		///////////////////
 
 		this.addCommand({
+			id: 'aet_reset-all-notes',
+			name: 'Reset all notes',
+			callback: () => {
+				deleteFrontmatterFromAllNotes(this);
+				randomiseAllNoteNames(this);				
+			},
+		});
+
+		this.addCommand({
 			id: 'aet_randomise-all-note-names',
 			name: 'Randomise all note names',
 			callback: () => randomiseAllNoteNames(this),

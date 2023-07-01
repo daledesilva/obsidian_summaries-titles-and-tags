@@ -63,19 +63,15 @@ export async function applyTitle(title: string, file: TFile, plugin: SummariesTi
         }
 
         let existingFile: TAbstractFile | null;
-        console.log('Checking for file');
         existingFile = v.getAbstractFileByPath(fullPath);
-        console.log('File checked: ', existingFile);
         while(existingFile) {
-            console.log('File EXISTS!');
+            console.log('File name already used, incrementing.');
             // File already exists, so give it a suffix or increment it and try again
             fullPath = `${path + safeFilename} ${++fileSuffix}.md`;
             console.log(`filename is already used for '${existingFile.name}', so trying '${fullPath}'`);
             existingFile = v.getAbstractFileByPath(fullPath);
         }        
-        console.log('Renaming file');
         await this.app.vault.rename(file, fullPath);
-        console.log('Renamed');
 
     } catch (error) {
         console.error('Failed to change note title:', error);
